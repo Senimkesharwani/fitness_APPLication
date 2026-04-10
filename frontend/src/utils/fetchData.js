@@ -23,9 +23,9 @@ export const fetchData = async (url, options) => {
     // If it's a relative URL, prepend the backend base URL
     let fullUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`;
     
-    // 🏷️ Cache Versioning: Force refresh with definitive limit v1324_fixed
+    // 🏷️ Cache Versioning: Force refresh with definitive limit v1324_FINAL_RESTORE
     if (url.includes('rapidapi.com')) {
-        fullUrl += fullUrl.includes('?') ? '&v=1324_fixed' : '?v=1324_fixed';
+        fullUrl += fullUrl.includes('?') ? '&v=1324_FINAL_RESTORE' : '?v=1324_FINAL_RESTORE';
     }
     
     // 🔍 Diagnostics
@@ -34,14 +34,20 @@ export const fetchData = async (url, options) => {
         console.log(`[Diagnostic] API Key status: ${rapidApiKey ? 'Loaded' : 'MISSING'}`);
     }
 
-    // 1. Check LocalStorage Cache for instant retrieval
+    // 1. Check LocalStorage Cache with Size-Aware Validation
     const cachedData = localStorage.getItem(fullUrl);
     if (cachedData) {
         const parsed = JSON.parse(cachedData);
-        // Only return if it's actual data, not an empty array or error
-        if (Array.isArray(parsed) && parsed.length > 0) {
-            console.log('Serving from LocalStorage:', fullUrl);
+        
+        // 🛡️ Integrity Check: If we requested a full library (limit=1324), ensure cache isn't just a partial scrap
+        const isFullLibraryRequest = fullUrl.includes('limit=1324');
+        const isCacheStatisticallyValid = !isFullLibraryRequest || (Array.isArray(parsed) && parsed.length > 1000);
+
+        if (Array.isArray(parsed) && parsed.length > 0 && isCacheStatisticallyValid) {
+            console.log(`Serving from LocalStorage: ${fullUrl.split('?')[0]} (${parsed.length} items)`);
             return parsed;
+        } else if (isFullLibraryRequest && Array.isArray(parsed)) {
+            console.warn(`[Diagnostic] Cache rejected for ${fullUrl}: only ${parsed.length} items found. Forcing fresh fetch.`);
         }
     }
 

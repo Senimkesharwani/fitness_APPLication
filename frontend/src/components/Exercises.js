@@ -5,11 +5,6 @@ import {
     Stack, 
     Typography, 
     Grid, 
-    TextField, 
-    Button, 
-    InputAdornment, 
-    useTheme 
-} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 import { exerciseOptions, fetchData } from '../utils/fetchData';
@@ -19,8 +14,6 @@ import Loader from './Loader';
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [exercisesPerPage] = useState(8); 
-  const [searchTerm, setSearchTerm] = useState('');
-  const theme = useTheme();
 
   useEffect(() => {
     const fetchExercisesData = async () => {
