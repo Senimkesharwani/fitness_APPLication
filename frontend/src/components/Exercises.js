@@ -18,7 +18,7 @@ import Loader from './Loader';
 
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [exercisesPerPage] = useState(9); 
+  const [exercisesPerPage] = useState(8); 
   const [searchTerm, setSearchTerm] = useState('');
   const theme = useTheme();
 
@@ -153,7 +153,7 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
       
       <Grid container spacing={4} justifyContent="center">
         {currentExercises.map((exercise, idx) => (
-          <Grid item xs={12} sm={6} md={3} key={idx} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Grid item xs={12} sm={6} lg={3} key={idx} sx={{ display: 'flex', justifyContent: 'center' }}>
             <ExerciseCard exercise={exercise} />
           </Grid>
         ))}
