@@ -21,7 +21,12 @@ export const fetchData = async (url, options) => {
 
   try {
     // If it's a relative URL, prepend the backend base URL
-    const fullUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`;
+    let fullUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`;
+    
+    // 🏷️ Cache Versioning: Force refresh if URL is a RapidAPI call to prevent scale collisions
+    if (url.includes('rapidapi.com')) {
+        fullUrl += fullUrl.includes('?') ? '&v=2_1300' : '?v=2_1300';
+    }
     
     // 🔍 Diagnostics
     if (url.includes('rapidapi.com')) {
