@@ -13,7 +13,7 @@ export const youtubeOptions = {
   }
 };
 
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 export const fetchData = async (url, options) => {
   // If it's a relative URL, prepend the backend base URL

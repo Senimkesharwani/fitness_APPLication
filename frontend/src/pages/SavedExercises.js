@@ -17,7 +17,7 @@ const SavedExercises = () => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/favorites', {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/favorites`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setExercises(res.data.data);

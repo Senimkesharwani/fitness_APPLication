@@ -18,7 +18,7 @@ const Detail = ({ exerciseDetail }) => {
     const checkFavorite = async () => {
       if (!token) return;
       try {
-        const res = await axios.get('http://localhost:5000/api/favorites', {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/favorites`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const favorites = res.data.data;
@@ -32,7 +32,7 @@ const Detail = ({ exerciseDetail }) => {
 
   const handleToggleFavorite = async () => {
     try {
-      await axios.post('http://localhost:5000/api/favorites', 
+      await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/favorites`, 
         { exerciseId: _id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -59,7 +59,7 @@ const Detail = ({ exerciseDetail }) => {
 
   return (
     <Stack gap="60px" sx={{ flexDirection: { lg: 'row' }, p: '20px', alignItems: 'center' }}>
-      <img src={`http://localhost:5000/api/exercises/proxy-image?id=${exerciseDetail.id}`} alt={name} loading="lazy" className="detail-image" />
+      <img src={`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/exercises/proxy-image?id=${exerciseDetail.id}`} alt={name} loading="lazy" className="detail-image" />
       <Stack sx={{ gap: { lg: '35px', xs: '20px' } }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography sx={{ fontSize: { lg: '64px', xs: '30px' } }} fontWeight={700} textTransform="capitalize">

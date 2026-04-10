@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     const loadUser = async () => {
       if (token) {
         try {
-          const res = await axios.get('http://localhost:5000/api/auth/profile', {
+          const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/auth/profile`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const register = async (userData) => {
-    const res = await axios.post('http://localhost:5000/api/auth/register', userData);
+    const res = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/auth/register`, userData);
     localStorage.setItem('token', res.data.token);
     setToken(res.data.token);
     setUser(res.data.user);
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (userData) => {
-    const res = await axios.post('http://localhost:5000/api/auth/login', userData);
+    const res = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/auth/login`, userData);
     localStorage.setItem('token', res.data.token);
     setToken(res.data.token);
     setUser(res.data.user);

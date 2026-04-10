@@ -67,7 +67,7 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      await axios.post('http://localhost:5000/api/auth/forgot-password', { email: resetEmail });
+      await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/auth/forgot-password`, { email: resetEmail });
       setSuccess('Verification code sent to your email.');
       setView('otp');
     } catch (err) {
@@ -82,7 +82,7 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      await axios.post('http://localhost:5000/api/auth/verify-otp', { email: resetEmail, otp });
+      await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/auth/verify-otp`, { email: resetEmail, otp });
       setSuccess('OTP verified! You can now reset your password.');
       setView('reset');
     } catch (err) {
@@ -100,7 +100,7 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      await axios.post('http://localhost:5000/api/auth/reset-password', { email: resetEmail, otp, password: newPassword });
+      await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/auth/reset-password`, { email: resetEmail, otp, password: newPassword });
       setSuccess('Password reset successful! Redirecting to login...');
       setTimeout(() => {
         setView('login');

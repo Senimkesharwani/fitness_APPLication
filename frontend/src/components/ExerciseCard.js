@@ -18,7 +18,7 @@ const ExerciseCard = ({ exercise }) => {
     const checkFav = async () => {
         if (!token) return;
         try {
-            const res = await axios.get('http://localhost:5000/api/favorites', {
+            const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/favorites`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setIsFav(res.data.data.some(f => f._id === exercise._id || f.id === exercise.id));
@@ -31,7 +31,7 @@ const ExerciseCard = ({ exercise }) => {
     e.preventDefault();
     if (!token) return alert('Please login to save favorites');
     try {
-        await axios.post('http://localhost:5000/api/favorites', 
+        await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/favorites`, 
             { exerciseId: exercise._id },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -73,7 +73,7 @@ const ExerciseCard = ({ exercise }) => {
         >
             <Box sx={{ position: 'relative', overflow: 'hidden' }}>
                 <img 
-                    src={`http://localhost:5000/api/exercises/proxy-image?id=${exercise.id}`} 
+                    src={`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/exercises/proxy-image?id=${exercise.id}`} 
                     alt={exercise.name} 
                     loading="lazy" 
                     style={{ width: '100%', height: '220px', objectFit: 'cover' }} // Reduced from 320px

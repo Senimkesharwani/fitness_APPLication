@@ -45,7 +45,7 @@ const Settings = () => {
         setError('');
         setSuccess('');
         try {
-            await axios.put('http://localhost:5000/api/auth/updatedetails', 
+            await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/auth/updatedetails`, 
                 { name, email, phone }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -66,7 +66,7 @@ const Settings = () => {
         setError('');
         setSuccess('');
         try {
-            await axios.put('http://localhost:5000/api/auth/updatepassword', 
+            await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/auth/updatepassword`, 
                 { currentPassword, newPassword }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );

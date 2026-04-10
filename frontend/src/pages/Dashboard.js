@@ -191,7 +191,7 @@ function ExerciseDetailModal({ open, onClose, exercise }) {
         </IconButton>
         
         <img 
-          src={`http://localhost:5000/api/exercises/proxy-image?id=${exercise.id}`} 
+          src={`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/exercises/proxy-image?id=${exercise.id}`} 
           alt={exercise.name} 
           style={{ width: '100%', height: '100%', objectFit: 'contain' }}
           onError={(e) => { e.target.src = 'https://via.placeholder.com/400x400?text=No+Preview'; }}
@@ -405,7 +405,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/favorites', { headers: { Authorization: `Bearer ${token}` } });
+        const res = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/favorites`, { headers: { Authorization: `Bearer ${token}` } });
         setFavorites(res.data.data);
       } catch (_) {}
       finally { setFavLoading(false); }
@@ -423,7 +423,7 @@ const Dashboard = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       // 2. Local-based generation call
-      const res = await axios.post('http://localhost:5000/api/ai/recommendation', {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/ai/recommendation`, {
         goal,
         weight: weight || 70,
         height: height || 170,
