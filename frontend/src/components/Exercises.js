@@ -15,16 +15,18 @@ import Loader from './Loader';
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [exercisesPerPage] = useState(8); 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
+    setSearchTerm('');
+    
     const fetchExercisesData = async () => {
       let exercisesData = [];
 
       if (bodyPart === 'all') {
-        // Fetch the definitive library (1324 total exercises) through explicit relative proxy path
         exercisesData = await fetchData('/exercises/rapidapi?url=/exercises&limit=1324', exerciseOptions);
       } else {
-        // Fetch target bodypart through explicit relative proxy path
         exercisesData = await fetchData(`/exercises/rapidapi?url=/exercises/bodyPart/${bodyPart}&limit=1324`, exerciseOptions);
       }
 
@@ -34,12 +36,29 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
     fetchExercisesData();
   }, [bodyPart, setExercises]);
 
-  // Internal State Reset for dynamic pagination
   useEffect(() => {
     setCurrentPage(1);
   }, [bodyPart, exercises]);
 
-  // Pagination Logic with Safety Guard
+  const handleLocalSearch = async () => {
+    if (!searchTerm.trim()) return;
+    setSearching(true);
+    try {
+        const data = await fetchData('/exercises/rapidapi?url=/exercises&limit=1324', exerciseOptions);
+        const filtered = data.filter(ex => 
+            ex.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            ex.target.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            ex.bodyPart.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setExercises(filtered);
+        setCurrentPage(1);
+    } catch (err) {
+        console.error('Local search failed');
+    } finally {
+        setSearching(false);
+    }
+  };
+
   const safeExercises = Array.isArray(exercises) ? exercises : [];
   const indexOfLastExercise = currentPage * exercisesPerPage;
   const indexOfFirstExercise = indexOfLastExercise - exercisesPerPage;
@@ -56,9 +75,12 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
   if (!currentExercises.length && !exercises.length) {
     return (
         <Box sx={{ mt: '100px', textAlign: 'center' }}>
-            <Typography variant="h5" color="textSecondary">
+            <Typography variant="h5" color="textSecondary" sx={{ mb: 2 }}>
                 No exercises found. Try a different search or filter.
             </Typography>
+            <Button variant="outlined" onClick={() => setSearchTerm('')} sx={{ borderRadius: '20px' }}>
+                Clear Search
+            </Button>
         </Box>
     );
   }
@@ -79,21 +101,54 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
         }}
     >
       
-      {/* Header with Heading */}
+      {/* Refined Header with Split Layout */}
       <Stack 
-        direction="row" 
-        justifyContent="center" 
-        alignItems="center"
-        mb="50px"
+        direction={{ xs: 'column', sm: 'row' }}
+        justifyContent="space-between" 
+        alignItems={{ xs: 'flex-start', sm: 'center' }}
+        mb="40px"
         width="100%"
+        gap={3}
+        sx={{ px: { lg: '40px', xs: '0px' } }}
       >
         <Typography 
             variant="h4" 
-            fontWeight="bold" 
-            sx={{ fontSize: { lg: '44px', xs: '30px' }, textAlign: 'center' }}
+            fontWeight="900" 
+            sx={{ fontSize: { lg: '40px', xs: '28px' }, letterSpacing: '-0.5px' }}
         >
           Showing <span style={{ color: '#FF2625' }}>Results</span>
         </Typography>
+
+        <Stack direction="row" spacing={1} sx={{ width: { xs: '100%', sm: 'auto' }, maxWidth: '400px' }}>
+          <TextField
+            fullWidth
+            size="small"
+            placeholder="Quick search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && handleLocalSearch()}
+            InputProps={{
+                startAdornment: <SearchIcon sx={{ color: 'text.secondary', mr: 1, fontSize: '20px' }} />,
+                sx: { borderRadius: '25px', bgcolor: 'rgba(0,0,0,0.03)', px: 1, fontSize: '14px' }
+            }}
+          />
+          <Button 
+            variant="contained" 
+            onClick={handleLocalSearch}
+            disabled={searching}
+            sx={{ 
+                bgcolor: '#FF2625', 
+                borderRadius: '25px', 
+                fontWeight: '700', 
+                textTransform: 'none', 
+                px: 3,
+                fontSize: '14px',
+                '&:hover': { bgcolor: '#e02221' }
+            }}
+          >
+            Search
+          </Button>
+        </Stack>
       </Stack>
       
       <Grid container spacing={4} justifyContent="center" sx={{ width: '100%', maxWidth: '1400px', mx: 'auto' }}>

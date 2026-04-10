@@ -85,7 +85,7 @@ const DashboardNavbar = () => {
     };
 
     const navLinks = [
-        { name: 'Search', path: '/exercises', scrollId: 'search-section', icon: <SearchIcon fontSize="small" /> },
+        { name: 'Search', path: '/search', icon: <SearchIcon fontSize="small" /> },
         { name: 'Exercises', path: '/exercises', icon: <FitnessCenterIcon fontSize="small" /> },
         { name: 'Get Plan', path: '/dashboard', scrollId: 'ai-plan-generator', icon: <LightbulbIcon fontSize="small" /> },
         { name: 'Contact', path: '/contact', icon: <ContactSupportIcon fontSize="small" /> },

@@ -16,6 +16,7 @@ import Settings from './pages/Settings';
 import Plans from './pages/Plans';
 import Notifications from './pages/Notifications';
 import ContactPage from './pages/ContactPage';
+import SearchPage from './pages/SearchPage';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
@@ -95,6 +96,11 @@ const App = () => {
               <Route path="/contact" element={
                 <ProtectedRoute>
                   <ContactPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/search" element={
+                <ProtectedRoute>
+                  <SearchPage />
                 </ProtectedRoute>
               } />
 

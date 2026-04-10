@@ -59,6 +59,7 @@ const LandingNavbar = () => {
     const navLinks = [
         { name: 'Home', path: '/', scrollId: null },
         { name: 'How It Works', path: '/', scrollId: 'how-it-works' },
+        { name: 'Search', path: '/search', scrollId: null },
         { name: 'Exercises', path: '/exercises', scrollId: 'exercises' },
         { name: 'About Us', path: '/', scrollId: 'about-us' },
         { name: 'Contact', path: '/', scrollId: 'contact' },
