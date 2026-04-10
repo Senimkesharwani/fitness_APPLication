@@ -13,10 +13,26 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 
   useEffect(() => {
     const fetchExercisesData = async () => {
-      const bodyPartsData = await fetchData('/exercises/bodyPartList', exerciseOptions);
-      // Ensure 'all' is only added once at the beginning
-      const uniqueBodyParts = bodyPartsData.includes('all') ? bodyPartsData : ['all', ...bodyPartsData];
-      setBodyParts(uniqueBodyParts);
+      try {
+        console.log('[Diagnostic] Fetching Body Parts Categories...');
+        // Direct call to RapidAPI for high availability
+        const bodyPartsData = await fetchData('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', exerciseOptions);
+        
+        const fallback = ['all', 'back', 'cardio', 'chest', 'lower arms', 'lower legs', 'neck', 'shoulders', 'upper arms', 'upper legs', 'waist'];
+        
+        // Use API data if valid, otherwise use bulletproof fallback
+        const finalData = (Array.isArray(bodyPartsData) && bodyPartsData.length > 0) 
+            ? bodyPartsData 
+            : fallback;
+
+        console.log('[Diagnostic] Body Parts List Load Success:', finalData);
+
+        const uniqueBodyParts = finalData.includes('all') ? finalData : ['all', ...finalData];
+        setBodyParts(uniqueBodyParts);
+      } catch (error) {
+          console.error('[Diagnostic] Body Parts Load FAILED, using fallback.', error);
+          setBodyParts(['all', 'back', 'cardio', 'chest', 'lower arms', 'lower legs', 'neck', 'shoulders', 'upper arms', 'upper legs', 'waist']);
+      }
     };
 
     fetchExercisesData();
