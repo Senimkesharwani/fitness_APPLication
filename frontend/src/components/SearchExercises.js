@@ -41,8 +41,8 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
   const handleSearch = async () => {
     if (search) {
       console.log('Searching for:', search);
-      // Fetching from the official RapidAPI endpoint with optimized limit
-      const exercisesData = await fetchData('https://exercisedb.p.rapidapi.com/exercises?limit=10', exerciseOptions);
+      // Fetching from the official RapidAPI endpoint with comprehensive library limit
+      const exercisesData = await fetchData('https://exercisedb.p.rapidapi.com/exercises?limit=1000', exerciseOptions);
       console.log('ExerciseDB Response:', exercisesData);
 
       const searchedExercises = exercisesData.filter(

@@ -28,11 +28,11 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
       const rapidApiBase = 'https://exercisedb.p.rapidapi.com/exercises';
 
       if (bodyPart === 'all') {
-        // Direct RapidAPI call with speed optimization
-        exercisesData = await fetchData(`${rapidApiBase}?limit=10`, exerciseOptions);
+        // Fetch full library for pagination and search
+        exercisesData = await fetchData(`${rapidApiBase}?limit=1000`, exerciseOptions);
       } else {
-        // Direct bodypart fetch with speed optimization
-        exercisesData = await fetchData(`${rapidApiBase}/bodyPart/${bodyPart}?limit=10`, exerciseOptions);
+        // Fetch target bodypart list with expanded limit
+        exercisesData = await fetchData(`${rapidApiBase}/bodyPart/${bodyPart}?limit=1000`, exerciseOptions);
       }
 
       setExercises(exercisesData || []);
