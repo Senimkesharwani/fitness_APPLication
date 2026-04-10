@@ -17,21 +17,20 @@ export const youtubeOptions = {
 const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 export const fetchData = async (url, options) => {
-  const rapidApiKey = process.env.REACT_APP_RAPID_API_KEY || '0c2319cff5mshe297e8ebc1ca216p18464fjsn860f0ff8df34';
 
   try {
     // If it's a relative URL, prepend the backend base URL
     let fullUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`;
     
-    // 🏷️ Cache Versioning: Force refresh with definitive limit v1324_FINAL_RESTORE
-    if (url.includes('rapidapi.com')) {
-        fullUrl += fullUrl.includes('?') ? '&v=1324_FINAL_RESTORE' : '?v=1324_FINAL_RESTORE';
-    }
-    
-    // 🔍 Diagnostics
-    if (url.includes('rapidapi.com')) {
-        console.log(`[Diagnostic] API Call to: ${url}`);
-        console.log(`[Diagnostic] API Key status: ${rapidApiKey ? 'Loaded' : 'MISSING'}`);
+    // 🛡️ CORS Shield: Redirect RapidAPI calls through the backend proxy
+    if (url.includes('exercisedb.p.rapidapi.com')) {
+        const urlObj = new URL(url);
+        const endpoint = urlObj.pathname;
+        const limit = urlObj.searchParams.get('limit');
+        
+        // Rewrite to call our backend proxy
+        fullUrl = `${BASE_URL}/exercises/rapidapi?url=${encodeURIComponent(endpoint)}${limit ? `&limit=${limit}` : ''}`;
+        console.log(`[CORS Bypass] Routing through Proxy: ${fullUrl}`);
     }
 
     // 1. Check LocalStorage Cache with Size-Aware Validation
@@ -51,14 +50,13 @@ export const fetchData = async (url, options) => {
         }
     }
 
-    // 2. Network Fetch with Key Reliability & Browser-level Caching
+    // 2. Network Fetch (Proxy-ready)
     const res = await fetch(fullUrl, {
       ...options,
       headers: {
-        ...options.headers,
-        'x-rapidapi-key': options.headers?.['x-rapidapi-key'] || rapidApiKey
+        ...options.headers
       },
-      cache: "force-cache"
+      cache: "default" // Let the proxy or browser handle caching as per standard
     });
 
     const data = await res.json();
@@ -71,5 +69,6 @@ export const fetchData = async (url, options) => {
     return data;
   } catch (error) {
     console.error("Fetch Error:", error);
+    return []; // Return safe empty array to prevent crashes
   }
 };

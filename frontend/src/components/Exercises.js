@@ -4,7 +4,8 @@ import {
     Box, 
     Stack, 
     Typography, 
-    Grid, 
+    Grid 
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 import { exerciseOptions, fetchData } from '../utils/fetchData';
@@ -39,10 +40,11 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
     setCurrentPage(1);
   }, [bodyPart, exercises]);
 
-  // Pagination
+  // Pagination Logic with Safety Guard
+  const safeExercises = Array.isArray(exercises) ? exercises : [];
   const indexOfLastExercise = currentPage * exercisesPerPage;
   const indexOfFirstExercise = indexOfLastExercise - exercisesPerPage;
-  const currentExercises = exercises.slice(indexOfFirstExercise, indexOfLastExercise);
+  const currentExercises = safeExercises.slice(indexOfFirstExercise, indexOfLastExercise);
 
   const paginate = (event, value) => {
     setCurrentPage(value);

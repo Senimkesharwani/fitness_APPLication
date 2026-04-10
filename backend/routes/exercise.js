@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { getExercises, getExercise, createExercise, getBodyPartList, getExercisesByBodyPart, getExercisesByTarget, getExercisesByEquipment, proxyExerciseImage } = require('../controllers/exerciseController');
+const { getExercises, getExercise, createExercise, getBodyPartList, getExercisesByBodyPart, getExercisesByTarget, getExercisesByEquipment, proxyExerciseImage, getRapidAPIData } = require('../controllers/exerciseController');
 const { protect } = require('../middleware/auth');
 
 router.get('/', getExercises);
+router.get('/rapidapi', getRapidAPIData);
 router.get('/bodyPartList', getBodyPartList);
 router.get('/bodyPart/:bodyPart', getExercisesByBodyPart);
 router.get('/target/:target', getExercisesByTarget);

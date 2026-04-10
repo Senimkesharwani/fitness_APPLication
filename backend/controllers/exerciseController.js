@@ -147,3 +147,42 @@ exports.proxyExerciseImage = async (req, res, next) => {
     res.status(500).json({ success: false, message: 'Failed to proxy image' });
   }
 };
+// @desc    Proxy generic RapidAPI ExerciseDB requests to bypass CORS
+// @route   GET /api/exercises/rapidapi
+// @access  Public
+exports.getRapidAPIData = async (req, res, next) => {
+  const { url, limit } = req.query;
+
+  if (!url) {
+    return res.status(400).json({ success: false, message: 'RapidAPI URL is required' });
+  }
+
+  try {
+    console.log(`[Proxy] Fetching from RapidAPI: ${url}${limit ? `?limit=${limit}` : ''}`);
+    
+    // Construct the endpoint URL if it's not a full URL
+    const targetUrl = url.startsWith('http') ? url : `https://exercisedb.p.rapidapi.com${url.startsWith('/') ? '' : '/'}${url}`;
+    
+    // Ensure limit is appended correctly to the RapidAPI call if provided
+    const finalUrl = new URL(targetUrl);
+    if (limit) finalUrl.searchParams.append('limit', limit);
+
+    const response = await axios({
+      method: 'get',
+      url: finalUrl.toString(),
+      headers: {
+        'x-rapidapi-key': process.env.RAPID_API_KEY,
+        'x-rapidapi-host': 'exercisedb.p.rapidapi.com'
+      }
+    });
+
+    res.status(200).json(response.data);
+  } catch (err) {
+    console.error('[Proxy Error] RapidAPI Fetch Failed:', err.message);
+    res.status(err.response?.status || 500).json({ 
+      success: false, 
+      message: 'Failed to fetch data from RapidAPI',
+      error: err.response?.data || err.message 
+    });
+  }
+};
