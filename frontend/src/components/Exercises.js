@@ -25,14 +25,17 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
   useEffect(() => {
     const fetchExercisesData = async () => {
       let exercisesData = [];
+      const rapidApiBase = 'https://exercisedb.p.rapidapi.com/exercises';
 
       if (bodyPart === 'all') {
-        exercisesData = await fetchData('/exercises', exerciseOptions);
+        // Direct RapidAPI call with speed optimization
+        exercisesData = await fetchData(`${rapidApiBase}?limit=10`, exerciseOptions);
       } else {
-        exercisesData = await fetchData(`/exercises/bodyPart/${bodyPart}`, exerciseOptions);
+        // Direct bodypart fetch with speed optimization
+        exercisesData = await fetchData(`${rapidApiBase}/bodyPart/${bodyPart}?limit=10`, exerciseOptions);
       }
 
-      setExercises(exercisesData);
+      setExercises(exercisesData || []);
     };
 
     fetchExercisesData();

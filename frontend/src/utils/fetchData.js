@@ -21,12 +21,26 @@ export const fetchData = async (url, options) => {
     // If it's a relative URL, prepend the backend base URL
     const fullUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`;
     
+    // 1. Check LocalStorage Cache for instant retrieval
+    const cachedData = localStorage.getItem(fullUrl);
+    if (cachedData) {
+        console.log('Serving from LocalStorage:', fullUrl);
+        return JSON.parse(cachedData);
+    }
+
+    // 2. Network Fetch with Browser-level Caching
     const res = await fetch(fullUrl, {
       ...options,
-      cache: "no-store"
+      cache: "force-cache"
     });
 
     const data = await res.json();
+
+    // 3. Persist to LocalStorage for future instant loads
+    if (data && !data.error) {
+        localStorage.setItem(fullUrl, JSON.stringify(data));
+    }
+
     return data;
   } catch (error) {
     console.error("Fetch Error:", error);
