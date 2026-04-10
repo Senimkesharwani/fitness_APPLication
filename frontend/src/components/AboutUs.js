@@ -15,7 +15,7 @@ const AboutUs = () => {
   const theme = useTheme();
 
   return (
-    <Box id="about-us" sx={{ py: { lg: '60px', xs: '40px' }, width: '100%', overflow: 'hidden', scrollMarginTop: '100px' }}>
+    <Box id="about-us" sx={{ py: { lg: '120px', xs: '80px' }, width: '100%', overflow: 'hidden', scrollMarginTop: '100px' }}>
       <Grid container spacing={8} alignItems="center">
         <Grid item xs={12} md={6}>
             <motion.div

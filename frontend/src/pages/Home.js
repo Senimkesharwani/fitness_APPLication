@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Container } from '@mui/material';
 
 import Exercises from '../components/Exercises';
 import SearchExercises from '../components/SearchExercises';
@@ -16,25 +16,27 @@ const Home = () => {
     <Box>
       <HeroBanner />
       
-      <Box id="how-it-works" sx={{ mt: { lg: '40px', xs: '20px' } }}>
-        <HowItWorks />
-      </Box>
+      <Container maxWidth="xl">
+        <Box id="how-it-works" sx={{ mt: { lg: '120px', xs: '80px' } }}>
+          <HowItWorks />
+        </Box>
 
-      <Box sx={{ mt: { lg: '40px', xs: '20px' } }}>
-        <SearchExercises setExercises={setExercises} bodyPart={bodyPart} setBodyPart={setBodyPart} />
-      </Box>
+        <Box sx={{ mt: { lg: '120px', xs: '80px' } }}>
+          <SearchExercises setExercises={setExercises} bodyPart={bodyPart} setBodyPart={setBodyPart} />
+        </Box>
 
-      <Box id="exercises" sx={{ mt: { lg: '40px', xs: '20px' } }}>
-        <Exercises setExercises={setExercises} exercises={exercises} bodyPart={bodyPart} />
-      </Box>
+        <Box id="exercises" sx={{ mt: { lg: '120px', xs: '80px' } }}>
+          <Exercises setExercises={setExercises} exercises={exercises} bodyPart={bodyPart} />
+        </Box>
 
-      <Box id="about-us" sx={{ mt: { lg: '40px', xs: '20px' } }}>
-        <AboutUs />
-      </Box>
+        <Box id="about-us" sx={{ mt: { lg: '120px', xs: '80px' } }}>
+          <AboutUs />
+        </Box>
 
-      <Box id="contact" sx={{ mt: { lg: '40px', xs: '20px' }, mb: { lg: '60px', xs: '30px' } }}>
-        <Contact />
-      </Box>
+        <Box id="contact" sx={{ mt: { lg: '120px', xs: '80px' }, pb: { lg: '100px', xs: '50px' } }}>
+          <Contact />
+        </Box>
+      </Container>
     </Box>
   );
 };

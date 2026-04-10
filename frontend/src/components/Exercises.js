@@ -67,34 +67,44 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
   if (!currentExercises.length) return <Loader />;
 
   return (
-    <Box id="exercises" sx={{ mt: { lg: '10px', xs: '5px' }, width: '100%', scrollMarginTop: '100px' }}>
+    <Box 
+        id="exercises" 
+        sx={{ 
+            mt: { lg: '20px', xs: '10px' }, 
+            width: '100%', 
+            scrollMarginTop: '120px', 
+            minHeight: { lg: '800px', xs: 'auto' },
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+        }}
+    >
       
-      {/* Header with Heading and Compact Search */}
+      {/* Header with Heading */}
       <Stack 
-        direction={{ xs: 'column', md: 'row' }} 
-        justifyContent="space-between" 
-        alignItems={{ xs: 'flex-start', md: 'center' }}
-        spacing={3}
-        mb="20px"
+        direction="row" 
+        justifyContent="center" 
+        alignItems="center"
+        mb="50px"
+        width="100%"
       >
         <Typography 
             variant="h4" 
             fontWeight="bold" 
-            sx={{ fontSize: { lg: '44px', xs: '30px' } }}
+            sx={{ fontSize: { lg: '44px', xs: '30px' }, textAlign: 'center' }}
         >
           Showing <span style={{ color: '#FF2625' }}>Results</span>
         </Typography>
       </Stack>
       
-      <Grid container spacing={4} justifyContent="center">
+      <Grid container spacing={4} justifyContent="center" sx={{ width: '100%', maxWidth: '1400px', mx: 'auto' }}>
         {currentExercises.map((exercise, idx) => (
           <Grid item xs={12} sm={6} md={3} key={idx} sx={{ display: 'flex', justifyContent: 'center' }}>
             <ExerciseCard exercise={exercise} />
           </Grid>
         ))}
       </Grid>
-
-      <Stack sx={{ mt: { lg: '60px', xs: '40px' } }} alignItems="center" justifyContent="center">
+      <Stack sx={{ mt: { lg: '100px', xs: '60px' }, mb: '20px' }} alignItems="center" justifyContent="center">
         {exercises.length > 8 && (
           <Pagination
             color="primary"

@@ -72,7 +72,7 @@ const Contact = () => {
   };
 
   return (
-    <Box id="contact" sx={{ py: { lg: '30px', xs: '20px' }, pb: { lg: '80px', xs: '40px' }, width: '100%', scrollMarginTop: '100px' }}>
+    <Box id="contact" sx={{ py: { lg: '30px', xs: '20px' }, pb: { lg: '150px', xs: '80px' }, width: '100%', scrollMarginTop: '120px' }}>
       <Typography 
         variant="h3" 
         sx={{ fontWeight: '800', textAlign: 'center', mb: '40px', fontSize: { lg: '48px', xs: '32px' }, color: theme.palette.text.primary }}

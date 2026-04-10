@@ -27,22 +27,23 @@ const HowItWorks = () => {
   const theme = useTheme();
 
   return (
-    <Box id="how-it-works" sx={{ py: { lg: '60px', xs: '40px' }, width: '100%', scrollMarginTop: '100px' }}>
+    <Box id="how-it-works" sx={{ py: { lg: '120px', xs: '80px' }, width: '100%', scrollMarginTop: '100px' }}>
       <Typography 
         variant="h3" 
-        sx={{ fontWeight: '800', textAlign: 'center', mb: '80px', fontSize: { lg: '48px', xs: '32px' }, color: theme.palette.text.primary }}
+        sx={{ fontWeight: '800', textAlign: 'center', mb: '100px', fontSize: { lg: '48px', xs: '32px' }, color: theme.palette.text.primary }}
       >
         How It <span style={{ color: '#FF2625' }}>Works</span>
       </Typography>
 
-      <Grid container spacing={4}>
+      <Grid container spacing={4} justifyContent="center" alignItems="stretch">
         {steps.map((step, idx) => (
-          <Grid item xs={12} md={4} key={idx}>
+          <Grid item xs={12} md={4} key={idx} sx={{ display: 'flex' }}>
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.2, duration: 0.8 }}
+              style={{ display: 'flex', width: '100%' }}
             >
               <Paper
                 elevation={0}
@@ -58,10 +59,12 @@ const HowItWorks = () => {
                     boxShadow: theme.palette.mode === 'light' ? '0 20px 40px rgba(0,0,0,0.05)' : '0 20px 40px rgba(0,0,0,0.5)',
                     borderColor: '#FF2625'
                   },
-                  height: '100%',
+                  flex: 1,
+                  width: '100%',
                   display: 'flex',
                   flexDirection: 'column',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  minHeight: '400px'
                 }}
               >
                 <Stack alignItems="center" gap={3}>
