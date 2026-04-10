@@ -353,9 +353,9 @@ const Dashboard = () => {
     water: 0,
     steps: 0,
     workoutDone: false,
-    streak: 7,
-    workoutsDone: 12,
-    goalReachedCount: 5
+    streak: 0,
+    workoutsDone: 0,
+    goalReachedCount: 0
   });
   const [favSearch, setFavSearch] = useState('');
   

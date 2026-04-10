@@ -18,20 +18,18 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
         // Direct call to RapidAPI for high availability
         const bodyPartsData = await fetchData('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', exerciseOptions);
         
-        const fallback = ['all', 'back', 'cardio', 'chest', 'lower arms', 'lower legs', 'neck', 'shoulders', 'upper arms', 'upper legs', 'waist'];
-        
-        // Use API data if valid, otherwise use bulletproof fallback
-        const finalData = (Array.isArray(bodyPartsData) && bodyPartsData.length > 0) 
-            ? bodyPartsData 
-            : fallback;
-
-        console.log('[Diagnostic] Body Parts List Load Success:', finalData);
-
-        const uniqueBodyParts = finalData.includes('all') ? finalData : ['all', ...finalData];
-        setBodyParts(uniqueBodyParts);
+        // Use API data if valid
+        if (Array.isArray(bodyPartsData) && bodyPartsData.length > 0) {
+            console.log('[Diagnostic] Body Parts List Load Success:', bodyPartsData);
+            const uniqueBodyParts = bodyPartsData.includes('all') ? bodyPartsData : ['all', ...bodyPartsData];
+            setBodyParts(uniqueBodyParts);
+        } else {
+            console.warn('[Diagnostic] Body Parts List API returned empty or invalid data.');
+            setBodyParts(['all']); // At least provide "all" to prevent UI crash
+        }
       } catch (error) {
-          console.error('[Diagnostic] Body Parts Load FAILED, using fallback.', error);
-          setBodyParts(['all', 'back', 'cardio', 'chest', 'lower arms', 'lower legs', 'neck', 'shoulders', 'upper arms', 'upper legs', 'waist']);
+          console.error('[Diagnostic] Body Parts Load FAILED.', error);
+          setBodyParts(['all']); 
       }
     };
 
