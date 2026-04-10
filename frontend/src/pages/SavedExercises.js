@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, Typography, Grid, Container, Stack, CircularProgress, useTheme } from '@mui/material';
+import { Box, Typography, Grid, Container, Stack, useTheme } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import axios from 'axios';

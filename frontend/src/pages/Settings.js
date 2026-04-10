@@ -8,10 +8,8 @@ import {
   Button, 
   Stack, 
   Alert, 
-  Divider, 
   InputAdornment, 
   IconButton,
-  Avatar,
   Grid,
   useTheme
 } from '@mui/material';

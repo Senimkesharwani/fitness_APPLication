@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Paper, Typography, useTheme, Grid, Stack } from '@mui/material';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell } from 'recharts';
 
 const AnalyticsCharts = ({ data }) => {
   const theme = useTheme();

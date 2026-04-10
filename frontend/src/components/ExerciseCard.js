@@ -9,7 +9,7 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
 const ExerciseCard = ({ exercise }) => {
-  const { user, token } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   const [isFav, setIsFav] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const theme = useTheme();

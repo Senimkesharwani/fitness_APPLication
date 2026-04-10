@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Container, useTheme } from '@mui/material';
+import { Box, Typography, Container } from '@mui/material';
 import { motion } from 'framer-motion';
 import SearchExercises from '../components/SearchExercises';
 import Exercises from '../components/Exercises';
@@ -8,7 +8,6 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 const ExercisesPage = () => {
     const [exercises, setExercises] = useState([]);
     const [bodyPart, setBodyPart] = useState('all');
-    const theme = useTheme();
 
     return (
         <Box sx={{ mt: { lg: '40px', xs: '20px' }, pb: '100px' }}>

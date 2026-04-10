@@ -16,7 +16,7 @@ import Logo from '../assets/images/Logo.png';
 import { useContext } from 'react';
 
 const LandingNavbar = () => {
-    const { user, token } = useContext(AuthContext);
+    const { token } = useContext(AuthContext);
     const { toggleColorMode } = useColorMode();
     const theme = useTheme();
     const navigate = useNavigate();

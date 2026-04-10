@@ -24,7 +24,6 @@ import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import { AuthContext } from '../context/AuthContext';
 import { useColorMode } from '../context/ThemeContext';

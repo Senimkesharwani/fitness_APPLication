@@ -19,11 +19,8 @@ import { fetchData, exerciseOptions } from '../utils/fetchData';
 import { motion, AnimatePresence } from 'framer-motion';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
-import RestaurantIcon from '@mui/icons-material/Restaurant';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
 import ScaleIcon from '@mui/icons-material/Scale';
 import HeightIcon from '@mui/icons-material/Height';
@@ -38,12 +35,6 @@ import WeeklyPlanner from '../components/WeeklyPlanner';
 import Achievements from '../components/Achievements';
 
 
-// AI Goal Meta Mapping (For UI labels)
-const GOAL_META = {
-  muscle:  { tag: '💪 Muscle Gain', color: '#FF4D4D', desc: 'Calorie surplus for growth' },
-  fatloss: { tag: '🔥 Fat Loss',    color: '#FF8C00', desc: 'Calorie deficit for fat burn' },
-  abs:     { tag: '🎯 Abs & Core',  color: '#4CAF50', desc: 'Mild deficit + core focus' },
-};
 
 // ─── Sub-Components ───────────────────────────────────────────────────────────
 const fadeUp = {
@@ -72,22 +63,6 @@ function StatCard({ icon, label, value, color }) {
   );
 }
 
-function DayCard({ day, label, icon, active, onClick }) {
-  const theme = useTheme();
-  return (
-    <Paper onClick={onClick} elevation={0} sx={{
-      p: 1.5, borderRadius: '14px', textAlign: 'center', cursor: 'pointer', minWidth: 66,
-      border: active ? '2px solid #FF2625' : `1px solid ${theme.palette.divider}`,
-      background: active ? 'linear-gradient(135deg,#FF2625,#FF8C00)' : theme.palette.background.paper,
-      transition: 'all 0.2s ease',
-      '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 8px 20px rgba(0,0,0,0.1)' }
-    }}>
-      <Typography variant="h6">{icon}</Typography>
-      <Typography variant="caption" fontWeight="700" sx={{ color: active ? '#fff' : 'text.secondary', display: 'block' }}>{day}</Typography>
-      <Typography variant="caption" fontWeight="600" sx={{ color: active ? 'rgba(255,255,255,0.85)' : 'text.primary', fontSize: '10px' }}>{label}</Typography>
-    </Paper>
-  );
-}
 
 function ExerciseRow({ ex, idx, onClick }) {
   const theme = useTheme();
@@ -387,8 +362,6 @@ const Dashboard = () => {
   // Related Exercises States
   const [relatedExercises, setRelatedExercises] = useState([]);
   const [loadingRelated, setLoadingRelated] = useState(false);
-  const [showRelated, setShowRelated] = useState(false);
-  const [relatedError, setRelatedError] = useState('');
   const relatedRef = useRef(null);
 
   // Detail View States
@@ -405,10 +378,8 @@ const Dashboard = () => {
     }
   }, []);
 
-  // Reset related exercises when day changes
   useEffect(() => {
     setRelatedExercises([]);
-    setShowRelated(false);
   }, [activeDay]);
 
   const updateDailyStats = (key, value) => {
@@ -446,7 +417,6 @@ const Dashboard = () => {
     if (!goal.trim() || !diet) return;
     setLoading(true);
     setPlan(null);
-    setShowRelated(false);
 
     try {
       // 1. Add artificial delay for better UX perception (Simulating "Intelligent Generation")
@@ -552,8 +522,6 @@ const Dashboard = () => {
     const target = getTargetMuscle(focus);
     
     setLoadingRelated(true);
-    setShowRelated(true);
-    setRelatedError('');
     setRelatedExercises([]);
 
     try {

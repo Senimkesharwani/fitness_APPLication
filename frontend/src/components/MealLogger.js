@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Paper, Typography, TextField, Button, Stack, useTheme, Dialog, DialogTitle, DialogContent, DialogActions, InputAdornment } from '@mui/material';
-import RestaurantIcon from '@mui/icons-material/Restaurant';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const MealLogger = ({ onLogMeal }) => {
