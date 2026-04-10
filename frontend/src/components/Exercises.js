@@ -19,14 +19,13 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
   useEffect(() => {
     const fetchExercisesData = async () => {
       let exercisesData = [];
-      const rapidApiBase = 'https://exercisedb.p.rapidapi.com/exercises';
 
       if (bodyPart === 'all') {
-        // Fetch the definitive library for 167-page coverage (1324 total exercises)
-        exercisesData = await fetchData(`${rapidApiBase}?limit=1324`, exerciseOptions);
+        // Fetch the definitive library (1324 total exercises) through explicit relative proxy path
+        exercisesData = await fetchData('/exercises/rapidapi?url=/exercises&limit=1324', exerciseOptions);
       } else {
-        // Fetch target bodypart with definitive coverage
-        exercisesData = await fetchData(`${rapidApiBase}/bodyPart/${bodyPart}?limit=1324`, exerciseOptions);
+        // Fetch target bodypart through explicit relative proxy path
+        exercisesData = await fetchData(`/exercises/rapidapi?url=/exercises/bodyPart/${bodyPart}&limit=1324`, exerciseOptions);
       }
 
       setExercises(exercisesData || []);

@@ -16,7 +16,8 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
       try {
         console.log('[Diagnostic] Fetching Body Parts Categories...');
         // Direct call to RapidAPI for high availability
-        const bodyPartsData = await fetchData('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', exerciseOptions);
+        // Routing through proxy via explicit relative proxy path
+        const bodyPartsData = await fetchData('/exercises/rapidapi?url=/exercises/bodyPartList', exerciseOptions);
         
         // Use API data if valid
         if (Array.isArray(bodyPartsData) && bodyPartsData.length > 0) {
@@ -25,7 +26,7 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
             setBodyParts(uniqueBodyParts);
         } else {
             console.warn('[Diagnostic] Body Parts List API returned empty or invalid data.');
-            setBodyParts(['all']); // At least provide "all" to prevent UI crash
+            setBodyParts(['all']); 
         }
       } catch (error) {
           console.error('[Diagnostic] Body Parts Load FAILED.', error);
@@ -39,8 +40,8 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
   const handleSearch = async () => {
     if (search) {
       console.log('Searching for:', search);
-      // Fetching from the official RapidAPI endpoint with definitive library limit (1324 total exercises)
-      const exercisesData = await fetchData('https://exercisedb.p.rapidapi.com/exercises?limit=1324', exerciseOptions);
+      // Fetching definitive library (1324 total exercises) through explicit relative proxy path
+      const exercisesData = await fetchData('/exercises/rapidapi?url=/exercises&limit=1324', exerciseOptions);
       console.log('ExerciseDB Response:', exercisesData);
 
       const searchedExercises = exercisesData.filter(
