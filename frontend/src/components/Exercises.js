@@ -18,7 +18,7 @@ import Loader from './Loader';
 
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [exercisesPerPage] = useState(8); 
+  const [exercisesPerPage] = useState(9); 
   const [searchTerm, setSearchTerm] = useState('');
   const theme = useTheme();
 
@@ -28,11 +28,11 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
       const rapidApiBase = 'https://exercisedb.p.rapidapi.com/exercises';
 
       if (bodyPart === 'all') {
-        // Fetch full library for pagination and search
-        exercisesData = await fetchData(`${rapidApiBase}?limit=1000`, exerciseOptions);
+        // Fetch massive library for full pagination coverage
+        exercisesData = await fetchData(`${rapidApiBase}?limit=1300`, exerciseOptions);
       } else {
-        // Fetch target bodypart list with expanded limit
-        exercisesData = await fetchData(`${rapidApiBase}/bodyPart/${bodyPart}?limit=1000`, exerciseOptions);
+        // Fetch target bodypart list with full coverage limit
+        exercisesData = await fetchData(`${rapidApiBase}/bodyPart/${bodyPart}?limit=1300`, exerciseOptions);
       }
 
       setExercises(exercisesData || []);
@@ -40,6 +40,10 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
 
     fetchExercisesData();
   }, [bodyPart, setExercises]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [bodyPart, exercises]);
 
   // Handle Internal Search
   const handleInternalSearch = async () => {
