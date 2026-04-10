@@ -11,6 +11,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 
 
+
 import { exerciseOptions, fetchData } from '../utils/fetchData';
 import ExerciseCard from './ExerciseCard';
 import Loader from './Loader';
