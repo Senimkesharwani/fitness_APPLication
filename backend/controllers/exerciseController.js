@@ -151,34 +151,42 @@ exports.proxyExerciseImage = async (req, res, next) => {
 // @route   GET /api/exercises/rapidapi
 // @access  Public
 exports.getRapidAPIData = async (req, res, next) => {
-  const { url, limit } = req.query;
+  const { url } = req.query;
 
   if (!url) {
     return res.status(400).json({ success: false, message: 'RapidAPI URL is required' });
   }
 
   try {
-    console.log(`[Proxy] Fetching from RapidAPI: ${url}${limit ? `?limit=${limit}` : ''}`);
-    
-    // Construct the endpoint URL if it's not a full URL
-    const targetUrl = url.startsWith('http') ? url : `https://exercisedb.p.rapidapi.com${url.startsWith('/') ? '' : '/'}${url}`;
-    
-    // Ensure limit is appended correctly to the RapidAPI call if provided
-    const finalUrl = new URL(targetUrl);
-    if (limit) finalUrl.searchParams.append('limit', limit);
+    // 1. Prepare query parameters from req.query (except 'url')
+    const queryParams = { ...req.query };
+    delete queryParams.url;
+
+    // 2. Standardize target endpoint path
+    const targetPath = url.startsWith('/') ? url : `/${url}`;
+
+    console.log(`[Proxy-Audit] Requesting: ${targetPath} | Params:`, queryParams);
 
     const response = await axios({
       method: 'get',
-      url: finalUrl.toString(),
+      url: `https://exercisedb.p.rapidapi.com${targetPath}`,
+      params: queryParams,
       headers: {
         'x-rapidapi-key': process.env.RAPID_API_KEY,
         'x-rapidapi-host': 'exercisedb.p.rapidapi.com'
       }
     });
 
+    console.log(`[Proxy-Audit] RapidAPI Response: ${response.data.length || 0} items returned.`);
     res.status(200).json(response.data);
   } catch (err) {
     console.error('[Proxy Error] RapidAPI Fetch Failed:', err.message);
+    
+    // Return empty array on specific data errors to prevent UI crash
+    if (err.response?.status === 404 || err.response?.status === 403) {
+        return res.status(err.response.status).json([]);
+    }
+
     res.status(err.response?.status || 500).json({ 
       success: false, 
       message: 'Failed to fetch data from RapidAPI',

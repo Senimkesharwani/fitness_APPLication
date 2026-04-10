@@ -26,10 +26,13 @@ export const fetchData = async (url, options) => {
     if (url.includes('exercisedb.p.rapidapi.com')) {
         const urlObj = new URL(url);
         const endpoint = urlObj.pathname;
-        const limit = urlObj.searchParams.get('limit');
         
         // Rewrite to call our backend proxy
-        fullUrl = `${BASE_URL}/exercises/rapidapi?url=${encodeURIComponent(endpoint)}${limit ? `&limit=${limit}` : ''}`;
+        // Append all search params from the original RapidAPI URL to our proxy call
+        const proxyParams = new URLSearchParams(urlObj.search);
+        proxyParams.set('url', endpoint);
+        
+        fullUrl = `${BASE_URL}/exercises/rapidapi?${proxyParams.toString()}`;
         console.log(`[CORS Bypass] Routing through Proxy: ${fullUrl}`);
     }
 
@@ -56,10 +59,21 @@ export const fetchData = async (url, options) => {
       headers: {
         ...options.headers
       },
-      cache: "default" // Let the proxy or browser handle caching as per standard
+      cache: "default"
     });
 
+    if (!res.ok) {
+        console.error(`[CORS Bypass] Fetch failed with status ${res.status}: ${fullUrl}`);
+        return [];
+    }
+
     const data = await res.json();
+
+    // 🛡️ Data Guard: Ensure we only return arrays to prevent '.map is not a function' errors
+    if (!Array.isArray(data)) {
+        console.warn(`[CORS Bypass] Expected array from ${fullUrl}, but got:`, typeof data);
+        return Array.isArray(data?.data) ? data.data : [];
+    }
 
     // 3. Persist to LocalStorage only if data is valid
     if (data && !data.error && Array.isArray(data) && data.length > 0) {
