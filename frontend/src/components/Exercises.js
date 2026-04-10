@@ -101,35 +101,54 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
         }}
     >
       
-      {/* Refined Header with Split Layout */}
+      {/* Professional Dashboard Toolbar */}
       <Stack 
         direction={{ xs: 'column', sm: 'row' }}
         justifyContent="space-between" 
-        alignItems={{ xs: 'flex-start', sm: 'center' }}
+        alignItems="center"
         mb="40px"
         width="100%"
         gap={3}
-        sx={{ px: { lg: '40px', xs: '0px' } }}
+        sx={{ 
+            px: { lg: '40px', xs: '10px' },
+            py: '10px',
+            borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+            backgroundColor: (theme) => theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.4)' : 'rgba(15, 23, 42, 0.4)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: '20px',
+            mt: '-20px' // Compact adjustment
+        }}
       >
         <Typography 
             variant="h4" 
             fontWeight="900" 
-            sx={{ fontSize: { lg: '40px', xs: '28px' }, letterSpacing: '-0.5px' }}
+            sx={{ 
+                fontSize: { lg: '36px', xs: '26px' }, 
+                letterSpacing: '-1px',
+                color: (theme) => theme.palette.text.primary 
+            }}
         >
           Showing <span style={{ color: '#FF2625' }}>Results</span>
         </Typography>
 
-        <Stack direction="row" spacing={1} sx={{ width: { xs: '100%', sm: 'auto' }, maxWidth: '400px' }}>
+        <Stack direction="row" spacing={1.5} sx={{ width: { xs: '100%', sm: 'auto' }, maxWidth: '450px' }}>
           <TextField
             fullWidth
             size="small"
-            placeholder="Quick search..."
+            placeholder="Search exercises..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleLocalSearch()}
             InputProps={{
-                startAdornment: <SearchIcon sx={{ color: 'text.secondary', mr: 1, fontSize: '20px' }} />,
-                sx: { borderRadius: '25px', bgcolor: 'rgba(0,0,0,0.03)', px: 1, fontSize: '14px' }
+                startAdornment: <SearchIcon sx={{ color: '#FF2625', mr: 1, fontSize: '20px' }} />,
+                sx: { 
+                    borderRadius: '40px', 
+                    bgcolor: (theme) => theme.palette.mode === 'light' ? '#f0f2f5' : 'rgba(255,255,255,0.05)', 
+                    px: 1.5, 
+                    fontSize: '14px',
+                    '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+                    '&:hover': { bgcolor: (theme) => theme.palette.mode === 'light' ? '#e4e6e9' : 'rgba(255,255,255,0.08)' }
+                }
             }}
           />
           <Button 
@@ -137,13 +156,22 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
             onClick={handleLocalSearch}
             disabled={searching}
             sx={{ 
-                bgcolor: '#FF2625', 
-                borderRadius: '25px', 
-                fontWeight: '700', 
+                background: 'linear-gradient(135deg, #FF2625, #FF8C00)', 
+                borderRadius: '40px', 
+                fontWeight: '800', 
                 textTransform: 'none', 
-                px: 3,
+                px: 4,
+                py: 1,
                 fontSize: '14px',
-                '&:hover': { bgcolor: '#e02221' }
+                color: '#fff',
+                boxShadow: '0 4px 15px rgba(255, 38, 37, 0.3)',
+                transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                '&:hover': { 
+                    transform: 'scale(1.05)',
+                    boxShadow: '0 8px 25px rgba(255, 38, 37, 0.5)',
+                    background: 'linear-gradient(135deg, #e02221, #FF8C00)', 
+                },
+                '&:active': { transform: 'scale(0.95)' }
             }}
           >
             Search
