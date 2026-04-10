@@ -28,11 +28,11 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
       const rapidApiBase = 'https://exercisedb.p.rapidapi.com/exercises';
 
       if (bodyPart === 'all') {
-        // Fetch massive library for full pagination coverage
-        exercisesData = await fetchData(`${rapidApiBase}?limit=1300`, exerciseOptions);
+        // Fetch the definitive library for 167-page coverage (1324 total exercises)
+        exercisesData = await fetchData(`${rapidApiBase}?limit=1324`, exerciseOptions);
       } else {
-        // Fetch target bodypart list with full coverage limit
-        exercisesData = await fetchData(`${rapidApiBase}/bodyPart/${bodyPart}?limit=1300`, exerciseOptions);
+        // Fetch target bodypart with definitive coverage
+        exercisesData = await fetchData(`${rapidApiBase}/bodyPart/${bodyPart}?limit=1324`, exerciseOptions);
       }
 
       setExercises(exercisesData || []);
@@ -41,26 +41,10 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
     fetchExercisesData();
   }, [bodyPart, setExercises]);
 
+  // Internal State Reset for dynamic pagination
   useEffect(() => {
     setCurrentPage(1);
   }, [bodyPart, exercises]);
-
-  // Handle Internal Search
-  const handleInternalSearch = async () => {
-    if (searchTerm) {
-        const exercisesData = await fetchData('/exercises', exerciseOptions);
-        
-        const filtered = exercisesData.filter(
-            (ex) => ex.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    ex.target.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    ex.equipment.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    ex.bodyPart.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        
-        setSearchTerm('');
-        setExercises(filtered);
-    }
-  };
 
   // Pagination
   const indexOfLastExercise = currentPage * exercisesPerPage;
@@ -105,55 +89,11 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
         >
           Showing <span style={{ color: '#FF2625' }}>Results</span>
         </Typography>
-
-        <Box 
-            sx={{ 
-                display: 'flex', 
-                gap: '10px', 
-                width: { xs: '100%', md: 'auto' },
-                maxWidth: '400px'
-            }}
-        >
-            <TextField
-                size="small"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Find an exercise..."
-                onKeyPress={(e) => e.key === 'Enter' && handleInternalSearch()}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <SearchIcon sx={{ color: '#FF2625', fontSize: 20 }} />
-                        </InputAdornment>
-                    ),
-                    sx: {
-                        borderRadius: '12px',
-                        backgroundColor: theme.palette.mode === 'light' ? 'rgba(0,0,0,0.02)' : 'rgba(255,255,255,0.05)',
-                        '& fieldset': { borderColor: theme.palette.divider }
-                    }
-                }}
-                sx={{ flex: 1 }}
-            />
-            <Button
-                variant="contained"
-                onClick={handleInternalSearch}
-                sx={{ 
-                    bgcolor: '#FF2625', 
-                    borderRadius: '12px',
-                    fontWeight: '700',
-                    px: 3,
-                    '&:hover': { bgcolor: '#e02221', transform: 'scale(1.02)' },
-                    transition: '0.3s'
-                }}
-            >
-                Search
-            </Button>
-        </Box>
       </Stack>
       
       <Grid container spacing={4} justifyContent="center">
         {currentExercises.map((exercise, idx) => (
-          <Grid item xs={12} sm={6} lg={3} key={idx} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Grid item xs={12} sm={6} md={3} key={idx} sx={{ display: 'flex', justifyContent: 'center' }}>
             <ExerciseCard exercise={exercise} />
           </Grid>
         ))}

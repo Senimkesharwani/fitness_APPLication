@@ -23,9 +23,9 @@ export const fetchData = async (url, options) => {
     // If it's a relative URL, prepend the backend base URL
     let fullUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`;
     
-    // 🏷️ Cache Versioning: Force refresh if URL is a RapidAPI call to prevent scale collisions
+    // 🏷️ Cache Versioning: Force refresh with definitive limit v1324_fixed
     if (url.includes('rapidapi.com')) {
-        fullUrl += fullUrl.includes('?') ? '&v=2_1300' : '?v=2_1300';
+        fullUrl += fullUrl.includes('?') ? '&v=1324_fixed' : '?v=1324_fixed';
     }
     
     // 🔍 Diagnostics
@@ -45,9 +45,13 @@ export const fetchData = async (url, options) => {
         }
     }
 
-    // 2. Network Fetch with Browser-level Caching
+    // 2. Network Fetch with Key Reliability & Browser-level Caching
     const res = await fetch(fullUrl, {
       ...options,
+      headers: {
+        ...options.headers,
+        'x-rapidapi-key': options.headers?.['x-rapidapi-key'] || rapidApiKey
+      },
       cache: "force-cache"
     });
 
