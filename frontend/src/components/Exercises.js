@@ -71,6 +71,16 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
     }
   };
 
+  if (!currentExercises.length && !exercises.length) {
+    return (
+        <Box sx={{ mt: '100px', textAlign: 'center' }}>
+            <Typography variant="h5" color="textSecondary">
+                No exercises found. Try a different search or filter.
+            </Typography>
+        </Box>
+    );
+  }
+
   if (!currentExercises.length) return <Loader />;
 
   return (

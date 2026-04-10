@@ -73,9 +73,13 @@ const ExerciseCard = ({ exercise }) => {
         >
             <Box sx={{ position: 'relative', overflow: 'hidden' }}>
                 <img 
-                    src={exercise.gifUrl} 
+                    src={`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/exercises/proxy-image?id=${exercise.id}`} 
                     alt={exercise.name} 
                     loading="lazy" 
+                    onError={(e) => {
+                        e.target.onerror = null; 
+                        e.target.src = 'https://via.placeholder.com/400x400?text=Exercise+Preview+Unavailable';
+                    }}
                     style={{ width: '100%', height: '220px', objectFit: 'cover' }} // Reduced from 320px
                 />
                 

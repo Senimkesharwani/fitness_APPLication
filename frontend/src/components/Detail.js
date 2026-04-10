@@ -59,7 +59,16 @@ const Detail = ({ exerciseDetail }) => {
 
   return (
     <Stack gap="60px" sx={{ flexDirection: { lg: 'row' }, p: '20px', alignItems: 'center' }}>
-      <img src={`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/exercises/proxy-image?id=${exerciseDetail.id}`} alt={name} loading="lazy" className="detail-image" />
+      <img 
+        src={`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/exercises/proxy-image?id=${exerciseDetail.id}`} 
+        alt={name} 
+        loading="lazy" 
+        className="detail-image" 
+        onError={(e) => {
+            e.target.onerror = null; 
+            e.target.src = 'https://via.placeholder.com/800x800?text=Exercise+Preview+Unavailable';
+        }}
+      />
       <Stack sx={{ gap: { lg: '35px', xs: '20px' } }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography sx={{ fontSize: { lg: '64px', xs: '30px' } }} fontWeight={700} textTransform="capitalize">
